@@ -2,6 +2,13 @@
 #include "oslabs.h"
 
 //The NULLRCB is defined as [RID:0, AT:0, CYL:0, ADDR:0, PID:0]
+/*struct RCB {
+        int request_id;
+        int arrival_timestamp;
+        int cylinder;
+        int address;
+        int process_id;
+    }*/
 
 struct RCB handle_request_arrival_fcfs(struct RCB request_queue[QUEUEMAX], int *queue_cnt, struct RCB current_request, struct RCB new_request, int timestamp){
 /*The method returns the RCB of the newly-arriving request if the disk is free (indicated by the third parameter being a NULLRCB), otherwise, 
