@@ -74,7 +74,7 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
         struct PCB next_process;
         int priority_scan_index = 0;
         int highest_priority = ready_queue[0].process_priority;
-        for(int i = 1; i <= *queue_cnt; i++){//Search for highest priority before queue_cnt update
+        for(int i = 1; i < *queue_cnt; i++){//Search for highest priority before queue_cnt update
             if(highest_priority > ready_queue[i].process_priority){
                 highest_priority = ready_queue[i].process_priority;
                 priority_scan_index = i;
@@ -168,14 +168,16 @@ struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int 
         struct PCB next_process;
         int smallest_rbt_index = 0;
         int smallest_rbt = ready_queue[0].remaining_bursttime;
-        for(int i = 1; i <= *queue_cnt; i++){
+        for(int i = 1; i < *queue_cnt; i++){
             if(smallest_rbt > ready_queue[i].remaining_bursttime){
                 smallest_rbt = ready_queue[1].remaining_bursttime;
                 smallest_rbt_index = i;
             }
         }
         next_process = ready_queue[smallest_rbt_index];
-        
+        for(int i = smallest_rbt_index; i < *queue_cnt - 1; i++){
+            ready_queue[i] = ready_queue[i + 1];
+        }
         *queue_cnt = *queue_cnt - 1;
         next_process.execution_starttime = timestamp;
         next_process.execution_endtime = timestamp + next_process.remaining_bursttime;
@@ -251,13 +253,16 @@ struct PCB handle_process_completion_rr(struct PCB ready_queue[QUEUEMAX], int *q
         struct PCB next_process;
         int earliest_at_index = 0;
         int earliest_at = ready_queue[0].arrival_timestamp;
-        for(int i = 1; i <= *queue_cnt; i++){
+        for(int i = 1; i < *queue_cnt; i++){
             if(earliest_at > ready_queue[i].arrival_timestamp){
                 earliest_at = ready_queue[1].arrival_timestamp;
                 earliest_at_index = i;
             }
         }
         next_process = ready_queue[earliest_at_index];
+        for(int i = earliest_at_index; i < *queue_cnt - 1; i++){
+            ready_queue[i] = ready_queue[i + 1];
+        }
         *queue_cnt = *queue_cnt - 1;
         next_process.execution_starttime = timestamp;
         next_process.execution_endtime = timestamp + next_process.remaining_bursttime;
