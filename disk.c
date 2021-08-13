@@ -13,6 +13,7 @@
 struct RCB handle_request_arrival_fcfs(struct RCB request_queue[QUEUEMAX], int *queue_cnt, struct RCB current_request, struct RCB new_request, int timestamp){
 /*The method returns the RCB of the newly-arriving request if the disk is free (indicated by the third parameter being a NULLRCB), otherwise, 
 it returns the RCB of the currently-serviced request after adding the newly-arriving request to the request queue  */
+
 }
 /*A sample execution input and output:
 input/output    parameter           value
