@@ -81,6 +81,9 @@ struct PCB handle_process_completion_pp(struct PCB ready_queue[QUEUEMAX], int *q
                 }
         }
         next_process = ready_queue[priority_scan_index];
+        for(int i = priority_scan_index; i < *queue_cnt - 1; i++){
+            ready_queue[i] = ready_queue[i + 1];
+        }
         *queue_cnt = *queue_cnt - 1;
         next_process.execution_starttime = timestamp;
         next_process.execution_endtime = timestamp + next_process.remaining_bursttime;
@@ -172,6 +175,7 @@ struct PCB handle_process_completion_srtp(struct PCB ready_queue[QUEUEMAX], int 
             }
         }
         next_process = ready_queue[smallest_rbt_index];
+        
         *queue_cnt = *queue_cnt - 1;
         next_process.execution_starttime = timestamp;
         next_process.execution_endtime = timestamp + next_process.remaining_bursttime;
