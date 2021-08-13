@@ -31,7 +31,7 @@ struct PCB handle_process_arrival_pp(struct PCB ready_queue[QUEUEMAX], int *queu
     then its PCB is simply added to the ready queue and the return value is the PCB of the currently-running process. As the newly-arriving
     process is added to the ready queue, its execution start time and execution end time are set to 0, and the remaining burst time is the 
     same as its total burst time.*/
-    else if(new_process.process_priority <= current_process.process_priority){
+    else if(new_process.process_priority >= current_process.process_priority){
         new_process.execution_starttime = 0;
         new_process.execution_endtime = 0;
         new_process.remaining_bursttime = new_process.total_bursttime;
