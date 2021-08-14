@@ -109,7 +109,7 @@ struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int
     removes the RCB of the selected request from the request queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        int request_index = 0, closest_cylinder = 0, earliest_at = 0;
+        int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 1; i < *queue_cnt; i++){
@@ -189,7 +189,7 @@ output          RCB             [RID:51, AT:1, CYL:53, ADDR:53, PID:51]*/
     /*if(*queue_cnt > 0){
         struct RCB next_RCB;
         bool flag = false, first_arrivaltime = false;
-        int request_index = 0, closest_cylinder = 0, earliest_at = 0; 
+        int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 0; i < *queue_cnt; i++){
