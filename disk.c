@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "oslabs.h"
 
 //The NULLRCB is defined as [RID:0, AT:0, CYL:0, ADDR:0, PID:0]
@@ -15,7 +16,7 @@ struct RCB handle_request_arrival_fcfs(struct RCB request_queue[QUEUEMAX], int *
     /*The method returns the RCB of the newly-arriving request if the disk is free (indicated by the third parameter being a NULLRCB), otherwise, 
     it returns the RCB of the currently-serviced request after adding the newly-arriving request to the request queue  */
     if((current_request.request_id == 0) && (current_request.arrival_timestamp == 0) && (current_request.cylinder == 0) //Disk free
-        && (current_request.address == 0) && (current_request.process_id == 0){
+        && (current_request.address == 0) && (current_request.process_id == 0)){
             return new_request;
     }
     else{
@@ -54,7 +55,7 @@ struct RCB handle_request_completion_fcfs(struct RCB request_queue[QUEUEMAX],int
         }
         next_RCB = request_queue[earliest_at_index];
         for(int i = earliest_at_index; i < *queue_cnt - 1; i++){
-            ready_queue[i] = ready_queue[i + 1];
+            request_queue[i] = request_queue[i + 1];
         }
         *queue_cnt = *queue_cnt -1;
         return next_RCB;
@@ -77,7 +78,7 @@ struct RCB handle_request_arrival_sstf(struct RCB request_queue[QUEUEMAX],int *q
     /*The method returns the RCB of the newly-arriving request if the disk is free (indicated by the third parameter being NULLRCB), otherwise, 
     it returns the RCB of the currently-serviced request after adding the newly-arriving request to the request queue*/
     if((current_request.request_id == 0) && (current_request.arrival_timestamp == 0) && (current_request.cylinder == 0) //Disk free
-        && (current_request.address == 0) && (current_request.process_id == 0){
+        && (current_request.address == 0) && (current_request.process_id == 0)){
             return new_request;
     }
     else{
@@ -121,7 +122,7 @@ struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int
         }
         next_RCB = request_queue[request_index];
         for(int i = request_index; i < *queue_cnt - 1; i++){
-            ready_queue[i] = ready_queue[i + 1];
+            request_queue[i] = request_queue[i + 1];
         }
         *queue_cnt = *queue_cnt -1;
         return next_RCB;
@@ -148,7 +149,7 @@ struct RCB handle_request_arrival_look(struct RCB request_queue[QUEUEMAX],int *q
     /*The method returns the RCB of the newly-arriving request if the disk is free (indicated by the third parameter being NULLRCB), 
     otherwise, it returns the RCB of the currently-serviced request after adding the newly-arriving request to the request queue. */
     if((current_request.request_id == 0) && (current_request.arrival_timestamp == 0) && (current_request.cylinder == 0) //Disk free
-        && (current_request.address == 0) && (current_request.process_id == 0){
+        && (current_request.address == 0) && (current_request.process_id == 0)){
             return new_request;
     }
     else{
@@ -203,15 +204,15 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
                 if(){//scan direction = 1 w/ larger Cyl
 
                 }
-                else if{//scan direction = 1 w/ no larger
+                else if(){//scan direction = 1 w/ no larger
 
                 }
             }
-            else if{//none same as current cyl
-                if{//scan direction = 0 w/ smaller Cyl
+            else if(){//none same as current cyl
+                if(){//scan direction = 0 w/ smaller Cyl
 
                 }
-                else if{//scan direction = 0 w/ larger cyl
+                else if(){//scan direction = 0 w/ larger cyl
 
                 }
             }
