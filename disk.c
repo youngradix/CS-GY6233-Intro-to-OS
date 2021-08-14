@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include "oslabs.h"
+
 
 //The NULLRCB is defined as [RID:0, AT:0, CYL:0, ADDR:0, PID:0]
 /*struct RCB {
@@ -102,7 +104,6 @@ input           timestamp           2
 output          request_queue       [RID:52, AT:2, CYL:54, ADDR:54, PID:52]
 output          queue_cnt           1
 output          RCB                 [RID:51, AT:1, CYL:53, ADDR:53, PID:51]*/
-
 struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int *queue_cnt,int current_cylinder){
     /*If the request queue is empty, the method returns NULLRCB, indicating that there is no request to service next. Otherwise, 
     the method finds the RCB in the request queue whose cylinder is closest to the current cylinder. If there are multiple requests 
@@ -110,7 +111,7 @@ struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int
     removes the RCB of the selected request from the request queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        int request_index = 0; int closest_cylinder = 0; int earliest_at = 0;
+        int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 1; i < *queue_cnt; i++){
@@ -188,7 +189,7 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
     After picking the RCB from the request queue, as described above, the method removes the RCB from the queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        int request_index = 0; int closest_cylinder = 0; int earliest_at = 0;
+        int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 0; i < *queue_cnt; i++){
