@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "oslabs.h"
-
-
 //The NULLRCB is defined as [RID:0, AT:0, CYL:0, ADDR:0, PID:0]
 /*struct RCB {
         int request_id;
@@ -111,7 +109,7 @@ struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int
     removes the RCB of the selected request from the request queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        int request_index = 0;
+        int request_index = 0, closest_cylinder = 0, earliest_at = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 1; i < *queue_cnt; i++){
@@ -174,7 +172,8 @@ input           timestamp       2
 output          request_queue   [RID:52, AT:2, CYL:54, ADDR:54, PID:52]
 output          queue_cnt       1
 output          RCB             [RID:51, AT:1, CYL:53, ADDR:53, PID:51]*/
-struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int  *queue_cnt, int current_cylinder, int scan_direction){
+
+//struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int  *queue_cnt, int current_cylinder, int scan_direction){
     /*If the request queue is empty, the method returns NULLRCB, indicating that there is no request to service next. Otherwise, it 
     picks the next request to service from the request queue. 
 
@@ -187,15 +186,18 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
     are requests with cylinders larger than the current cylinder, the method picks the request whose cylinder is closest to the current cylinder.  
     
     After picking the RCB from the request queue, as described above, the method removes the RCB from the queue and returns it.*/
-    if(*queue_cnt > 0){
+    /*if(*queue_cnt > 0){
         struct RCB next_RCB;
-        int request_index = 0;
+        bool flag = false, first_arrivaltime = false;
+        int request_index = 0, closest_cylinder = 0, earliest_at = 0; 
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 0; i < *queue_cnt; i++){
-            if(current_cylinder == request_queue[i].cylinder){
-                if(){
-
+            if(closest_cylinder == request_queue[i].cylinder){
+                earliest_at = request_queue[i].arrival_timestamp;
+                            request_queue = i;
+                        }
+        
                 }
                 else{
 
