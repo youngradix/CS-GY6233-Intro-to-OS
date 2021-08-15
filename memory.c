@@ -94,12 +94,25 @@ struct MEMORY_BLOCK first_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     int memory_map_index = 0;
     int first_fit_segement = 0; 
     for(int i = 0; i <= *map_cnt - 1; i++){
-        if(request_size <= memory_map[i].segment_size){//1+2
+        if(request_size == memory_map[i].segment_size){//1
             first_fit_segement = request_size;
             size_match = true;
             memory_map_index = i;
             break;
         }
+        else if((request_size <= memory_map[i].segment_size) && (memory_map[i].process_id == 0)){//2
+            if(size_match){
+                first_fit_segement = memory_map[i].segment_size;
+                size_match = true;
+                memory_map_index = i;
+            }
+            else{
+                if(first_fit_segement < memory_map[i].segment_size){
+                    first_fit_segement = memory_map[i].segment_size;
+                    memory_map_index = i;
+                }
+            }
+        } 
     }
     if(!size_match){//1 + 2
         freeblock = memory_map[memory_map_index];// 0, 1023, 1024, 0
