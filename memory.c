@@ -216,7 +216,8 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
     as the requested size. 
     1.If the free block found is exactly of the same size as the requested size, the method updates the process id to allocate it and returns this memory block. 
     2.If the free block found is larger than the requested size, the block is split into two pieces - the first piece allocated and the second piece becoming a free block in the memory map. 
-    Thus, the method may alter the memory map appropriately. Note that if there is no free block of memory (in the memory map) that is at least as large 
+    Thus, the method may alter the memory map appropriately. 
+    3.Note that if there is no free block of memory (in the memory map) that is at least as large 
     as the requested size, the method returns the NULLBLOCK. */
     struct MEMORY_BLOCK freeblock = {0, 0, 0, 0};
     struct MEMORY_BLOCK allocated = {0, 0, 0, 0};
@@ -224,17 +225,23 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
     int memory_map_index = 0;
     int next_fit_segement = 0;
     int next_fit_index = 0; 
-    for(int i = last_address; i <= *map_cnt + last_address - 1; i++){
-        if(i >= *map_cnt){
-            next_fit_index = i - *map_cnt;
+    for(int i = 0; i <= *map_cnt - 1; i++){
+        if((request_size == memory_map[i].segment_size) && (memory_map[i].process_id == 0)){
+            next_fit_segement = request_size;
+            size_match = true;
+            memory_map_index = i;
         }
-        else{
-            next_fit_index = i;
-            if((request_size <= memory_map[next_fit_index].segment_size) && (memory_map[i].process_id == 0)){
-                next_fit_segement = request_size;
+        else if((request_size < memory_map[i].segment_size) && (memory_map[i].process_id == 0)){
+            if(size_match){
+                next_fit_segement = memory_map[i].segment_size;
                 size_match = true;
-                memory_map_index = next_fit_index;
-                break;
+                memory_map_index;
+            }
+            else{
+                if(next_fit_segement < memory_map[i].segment_size){
+                    next_fit_segement = memory_map[i].segment_size;
+                    memory_map_index = i;
+                }
             }
         }
     }
