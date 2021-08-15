@@ -301,7 +301,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                         for(int release_memory_index = i; release_memory_index <= *map_cnt; release_memory_index++){
                             memory_map[release_memory_index] = memory_map[release_memory_index + 1];
                         }
-                        *map_cnt = *map_cnt + 1;
+                        *map_cnt = *map_cnt - 1;
                         free = true;
                     }
                 }
