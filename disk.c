@@ -191,7 +191,8 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
     After picking the RCB from the request queue, as described above, the method removes the RCB from the queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        bool first_arrivaltime = false, closest_cylinder_same = false, larger_cylinders_present = false, smaller_cylinders_present = false,increasing_direction = false;
+        bool first_arrivaltime = false, closest_cylinder_same = false,  direction_first = false, opposite_direction_first = false, 
+        larger_cylinders_present = false, smaller_cylinders_present = false;
         int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
@@ -210,20 +211,20 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
             }
             else if((scan_direction == 1) && (closest_cylinder_same)){
                 if(abs(current_cylinder - request_queue[i].cylinder > 0))
-                    if(!larger_cylinders_present){
+                    if(direction_first){
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                         larger_cylinders_present = true;
-                        increasing_direction = true;
+                        direction_first = true;
                         request_index = i;
                     }
-                    else if((larger_cylinders_present) && (closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder))){
+                    else if(closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder)){
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                         request_index = i;
                     }
-                else if((increasing_direction) && (abs(current_cylinder - request_queue[i].cylinder > 0))){
-                    if(smaller_cylinders_present){
+                else if((larger_cylinders_present) && (abs(current_cylinder - request_queue[i].cylinder > 0))){
+                    if(opposite_direction_first){
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
-                        smaller_cylinders_present = true;
+                        opposite_direction_first = true;
                         request_index = i;
                     }
                     else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){
@@ -233,22 +234,29 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
                 }
             }
             else if((scan_direction == 0) && (closest_cylinder_same)){//3 & Check for smaller cyl or lar
-                if(abs(current_cylinder- request_queue[i]/cylinder > 0)){
-                    if(smaller_cylinders_present){//scan direction = 0 w/ smaller Cyl
+                if(abs(current_cylinder- request_queue[i].cylinder > 0)){
+                    if(direction_first){//scan direction = 0 w/ smaller Cyl
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                         smaller_cylinders_present = true;
+                        direction_first = true;
                         request_index = i;
                     }
-                    else if(!larger_cylinders_present){//scan direction = 0 w/ larger cyl
-
-
+                    else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){//scan direction = 0 w/ larger cyl
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        request_index = i;
                     }
                 }
-                else if((increasing_direction) &&  (abs(current_cylinder - request_queue[i].cylinder) > 0)){
-                    if(!larger_cylinders_present){
+                else if((smaller_cylinders_present) &&  (abs(current_cylinder - request_queue[i].cylinder) > 0)){
+                    if(opposite_direction_first){
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
-                        larger
+                        opposite_direction_first = true;
+                        request_index = i;
                     }
+                    else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder;
+                        request_index = i;
+                    }
+                        
                 }   
             }
         }
