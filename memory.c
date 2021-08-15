@@ -286,7 +286,8 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
     method does not have any explicit return value and instead modifies the memory map passed in  */
     bool free = false;
     int release_memory_index = 0;
-    if((*map_cnt == 1) && (memory_map[0].process_id == 0)){
+    if((*map_cnt == 1) && (memory_map[0].start_address == 0) && (memory_map[0].end_address == 0) && 
+    (memory_map[0].segment_size == 0) && (memory_map[0].process_id == 0)){
         return;
     }
     else{
