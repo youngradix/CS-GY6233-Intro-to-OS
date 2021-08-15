@@ -58,7 +58,7 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
         }
         memory_map[memory_map_index + 1].start_address = allocated.end_address + 1;//10
         memory_map[memory_map_index + 1].end_address = freeblock.end_address;//1023
-        memory_map[memory_map_index + 1].segment_size = best_fit_segment - request_size;//1024 - 10 = 1014
+        memory_map[memory_map_index + 1].segment_size = freeblock.segment_size - request_size;//1024 - 10 = 1014
         memory_map[memory_map_index + 1].process_id = freeblock.process_id;//0
         memory_map[memory_map_index] = allocated;
         return allocated;
