@@ -298,7 +298,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                     if(memory_map[i -1].process_id == 0){
                         memory_map[i - 1].end_address = freed_block.end_address;
                         memory_map[i - 1].segment_size = memory_map[i - 1].segment_size + freed_block.segment_size;
-                        for(int release_memory_index = 1; i <= *map_cnt; i++){
+                        for(int release_memory_index = i; release_memory_index <= *map_cnt; i++){
                             memory_map[i] = memory_map[i + 1];
                         }
                         *map_cnt = *map_cnt + 1;
@@ -312,7 +312,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                     else if(memory_map[i].process_id == 0){
                         memory_map[i].start_address = memory_map[i - 1].start_address;
                         memory_map[i].segment_size = memory_map[i].end_address - memory_map[i].start_address + 1;
-                        for(int release_memory_index = 1; i <= *map_cnt; i++){
+                        for(int release_memory_index = i; release_memory_index <= *map_cnt; i++){
                             memory_map[i - 1] = memory_map[i];
                         }
                         *map_cnt = *map_cnt - 1;
