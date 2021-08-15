@@ -25,7 +25,7 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
     bool size_match = false;
     int memory_map_index = 0;
     int best_fit_segment = 0;
-    for(i = 0; i <= *map_cnt; i++){
+    for(int i = 0; i <= *map_cnt; i++){
         if(request_size == memory_map[i].segment_size){//1
             best_fit_segment = request_size;
             size_match = true;
@@ -34,7 +34,7 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
         }
         else if((memory_map[i].segment_size > request_size) && (memory_map[i].process_id == 0)){//2
             if(size_match){
-                best_fit_segment = memory_map_index[i].segment_size;
+                best_fit_segment = memory_map[i].segment_size;
                 size_match = true;
                 memory_map_index = i;
             }
@@ -54,7 +54,7 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
         allocated.process_id = process_id;//32
         *map_cnt = *map_cnt + 1;//2
         for(int i = memory_map_index; i <= *map_cnt; i++){//move freeblock
-            memory_map[memory_map_index + 1] = memory_map[i]
+            memory_map[memory_map_index + 1] = memory_map[i];
         }
         memory_map[memory_map_index + 1].start_address = allocated.end_address + 1;//10
         memory_map[memory_map_index + 1].end_address = freeblock.end_address;//1023
@@ -93,10 +93,10 @@ struct MEMORY_BLOCK first_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     bool size_match = false;
     int memory_map_index = 0;
     int first_fit_segement = 0; 
-    for(int = 0; i <= *map_cnt; i++){
+    for(int i = 0; i <= *map_cnt; i++){
         if(request_size <= memory_map[i].segment_size){//1+2
             first_fit_segement = request_size;
-            size_match = true
+            size_match = true;
             memory_map_index = i;
             break;
         }
@@ -109,7 +109,7 @@ struct MEMORY_BLOCK first_fit_allocate(int request_size, struct MEMORY_BLOCK mem
         allocated.process_id = process_id;//32
         *map_cnt = *map_cnt + 1;//2
         for(int i = memory_map_index; i <= *map_cnt; i++){//move freeblock
-            memory_map[memory_map_index + 1] = memory_map[i]
+            memory_map[memory_map_index + 1] = memory_map[i];
         }
         memory_map[memory_map_index + 1].start_address = allocated.end_address + 1;//10
         memory_map[memory_map_index + 1].end_address = freeblock.end_address;//1023
@@ -148,7 +148,7 @@ struct MEMORY_BLOCK worst_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     bool size_match = false;
     int memory_map_index = 0;
     int worst_fit_segement = 0; 
-    for(int = 0; i <= *map_cnt; i++){
+    for(int i = 0; i <= *map_cnt; i++){
         if((request_size <= memory_map[i].segment_size) && (memory_map[i].process_id == 0)){
             if(size_match){
                 worst_fit_segement = memory_map[i].segment_size;
@@ -171,7 +171,7 @@ struct MEMORY_BLOCK worst_fit_allocate(int request_size, struct MEMORY_BLOCK mem
         allocated.process_id = process_id;//32
         *map_cnt = *map_cnt + 1;//2
         for(int i = memory_map_index; i < *map_cnt; i++){//move freeblock
-            memory_map[memory_map_index + 1] = memory_map[i]
+            memory_map[memory_map_index + 1] = memory_map[i];
         }
         memory_map[memory_map_index + 1].start_address = allocated.end_address + 1;//10
         memory_map[memory_map_index + 1].end_address = freeblock.end_address;//1023
@@ -233,7 +233,7 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
         allocated.process_id = process_id;//32
         *map_cnt = *map_cnt + 1;//2
         for(int i = memory_map_index; i <= *map_cnt; i++){//move freeblock
-            memory_map[memory_map_index + 1] = memory_map[i]
+            memory_map[memory_map_index + 1] = memory_map[i];
         }
         memory_map[memory_map_index + 1].start_address = allocated.end_address + 1;//10
         memory_map[memory_map_index + 1].end_address = freeblock.end_address;//1023
@@ -290,7 +290,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                         i = i + 1;
                     }
                     else if(memory_map[i].process_id == 0){
-                        memeory_map[i].start_address = memory_map[i - 1].start_address;
+                        memory_map[i].start_address = memory_map[i - 1].start_address;
                         memory_map[i].segment_size = memory_map[i].end_address - memory_map[i].start_address + 1;
                         for(int i = release_memory_index; i <= *map_cnt; i++){
                             memory_map[i - 1] = memory_map[i];
