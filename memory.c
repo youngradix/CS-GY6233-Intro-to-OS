@@ -211,7 +211,7 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
     int memory_map_index = 0;
     int next_fit_segement = 0;
     int next_fit_index = 0; 
-    for(int i = last_address; i <= *map_cnt + last_address; i++){
+    for(int i = last_address; i <= *map_cnt; i++){
         if(i >= *map_cnt){
             next_fit_index = i - *map_cnt;
         }
@@ -240,7 +240,6 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
         memory_map[memory_map_index + 1].segment_size = next_fit_segement - request_size;//1024 - 10 = 1014
         memory_map[memory_map_index + 1].process_id = freeblock.process_id;
         memory_map[memory_map_index] = allocated;
-        *map_cnt = *map_cnt + 1;//2
         return allocated;
     }
     else{
