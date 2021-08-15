@@ -211,7 +211,7 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
     int memory_map_index = 0;
     int next_fit_segement = 0;
     int next_fit_index = 0; 
-    for(int i = last_address; i <= *map_cnt; i++){
+    for(int i = last_address; i <= *map_cnt + last_address; i++){
         if(i >= *map_cnt){
             next_fit_index = i - *map_cnt;
         }
