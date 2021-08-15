@@ -113,7 +113,14 @@ struct RCB handle_request_completion_sstf(struct RCB request_queue[QUEUEMAX],int
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 1; i < *queue_cnt; i++){
-            if(closest_cylinder > request_queue[i].cylinder){
+            if(closest_cylinder == abs(current_cylinder - request_queue[i].cylinder)){
+                if(closest_cylinder > request_queue[i].cylinder){
+                closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                earliest_at = request_queue[i].arrival_timestamp;
+                request_index = i;
+                }
+            }
+            else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){
                 closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                 earliest_at = request_queue[i].arrival_timestamp;
                 request_index = i;
