@@ -177,53 +177,79 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
     /*If the request queue is empty, the method returns NULLRCB, indicating that there is no request to service next. Otherwise, it 
     picks the next request to service from the request queue. 
 
-    If there are requests in the queue with the same cylinder as the current cylinder, the method picks the one among these requests 
-    with the earliest arrival time. Otherwise, if the scan direction is 1 and there are requests with cylinders larger than the current 
-    cylinder, the method picks the one among these whose cylinder is closest to the current cylinder. Otherwise, if the scan direction 
-    is 1 and there are no requests with cylinders larger than the current cylinder, the method picks the request whose cylinder is closest 
-    to the current cylinder. Otherwise, if the scan direction is 0 and there are requests with cylinders smaller than the current cylinder, 
-    the method picks the one among these whose cylinder is closest to the current cylinder. Otherwise, if the scan direction is 0 and there 
+    1.If there are requests in the queue with the same cylinder as the current cylinder, the method picks the one among these requests 
+    with the earliest arrival time. 
+    2.Otherwise, if the scan direction is 1 and there are requests with cylinders larger than the current 
+    cylinder, the method picks the one among these whose cylinder is closest to the current cylinder. 
+    2.Otherwise, if the scan direction is 1 and there are no requests with cylinders larger than the current cylinder, the method picks the request whose cylinder is closest 
+    to the current cylinder. 
+    3.Otherwise, if the scan direction is 0 and there are requests with cylinders smaller than the current cylinder, 
+    the method picks the one among these whose cylinder is closest to the current cylinder. 
+    3.Otherwise, if the scan direction is 0 and there 
     are requests with cylinders larger than the current cylinder, the method picks the request whose cylinder is closest to the current cylinder.  
-    
+   
     After picking the RCB from the request queue, as described above, the method removes the RCB from the queue and returns it.*/
     if(*queue_cnt > 0){
         struct RCB next_RCB;
-        bool first_arrivaltime = false, closest_cylinder_same = false, larger_cylinders_present = false, smaller_cylinders_present = false;
+        bool first_arrivaltime = false, closest_cylinder_same = false, larger_cylinders_present = false, smaller_cylinders_present = false,increasing_direction = false;
         int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 0; i < *queue_cnt; i++){
-            if(current_cylinder == request_queue[i].cylinder){
-                if(first_arrivaltime){
+            if(current_cylinder == request_queue[i].cylinder){//if same cyl as curr
+                if(first_arrivaltime){//first at store
                     earliest_at = request_queue[i].arrival_timestamp;
                     first_arrivaltime = true;
                     closest_cylinder_same = true;
                     request_index = i;
                 }
-                else if(earliest_at > request_queue[i].arrival_timestamp){
+                else if(earliest_at > request_queue[i].arrival_timestamp){//Earliest at
                     earliest_at = request_queue[i].arrival_timestamp;
                     request_index = i;
                 }
             }
-            else if((scan_direction == 1) && (closest_cylinder_same)){//none same cyl as current cyl
-                if(!larger_cylinders_present){//scan direction = 1 w/ larger Cyl
-                    closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
-                    larger_cylinders_present = true;
-                    request_index = i;
-                }
-                else if((larger_cylinders_present) && closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder)){//scan direction = 1 w/ no larger
-                    closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
-                    request_index = i;
+            else if((scan_direction == 1) && (closest_cylinder_same)){
+                if(abs(current_cylinder - request_queue[i].cylinder > 0))
+                    if(!larger_cylinders_present){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        larger_cylinders_present = true;
+                        increasing_direction = true;
+                        request_index = i;
+                    }
+                    else if((larger_cylinders_present) && (closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder))){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        request_index = i;
+                    }
+                else if((increasing_direction) && (abs(current_cylinder - request_queue[i].cylinder > 0))){
+                    if(smaller_cylinders_present){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        smaller_cylinders_present = true;
+                        request_index = i;
+                    }
+                    else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        request_index = i;
+                    }
                 }
             }
-            else if((scan_direction == 0) && (closest_cylinder_same)){//none same as current cyl
-                if(!smaller_cylinders_present){//scan direction = 0 w/ smaller Cyl
-                    closest_cylinder = abs(request_queue[i].cylinder)
-                }
-                else if(!larger_cylinders_present){//scan direction = 0 w/ larger cyl
+            else if((scan_direction == 0) && (closest_cylinder_same)){//3 & Check for smaller cyl or lar
+                if(abs(current_cylinder- request_queue[i]/cylinder > 0)){
+                    if(smaller_cylinders_present){//scan direction = 0 w/ smaller Cyl
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        smaller_cylinders_present = true;
+                        request_index = i;
+                    }
+                    else if(!larger_cylinders_present){//scan direction = 0 w/ larger cyl
 
 
+                    }
                 }
+                else if((increasing_direction) &&  (abs(current_cylinder - request_queue[i].cylinder) > 0)){
+                    if(!larger_cylinders_present){
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                        larger
+                    }
+                }   
             }
         }
         next_RCB = request_queue[request_index];
