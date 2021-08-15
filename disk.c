@@ -217,7 +217,7 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
                         direction_first = true;
                         request_index = i;
                     }
-                    else if(closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder)){
+                    else if(closest_cylinder > abs(current_cylinder - ready_queue[i].cylinder)){
                         closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                         request_index = i;
                     }
@@ -253,7 +253,7 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
                         request_index = i;
                     }
                     else if(closest_cylinder > abs(current_cylinder - request_queue[i].cylinder)){
-                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder;
+                        closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
                         request_index = i;
                     }
                         
