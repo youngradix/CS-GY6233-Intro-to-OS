@@ -285,7 +285,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
     map is altered to reduce the number of memory blocks by one and the ending address (and the size) of the previous free block extended. Note that the 
     method does not have any explicit return value and instead modifies the memory map passed in  */
     bool free = false;
-    int release_memory_index = 0;
+    //int release_memory_index = 0;
     if((*map_cnt == 1) && (memory_map[0].start_address == 0) && (memory_map[0].end_address == 0) && 
     (memory_map[0].segment_size == 0) && (memory_map[0].process_id == 0)){
         return;
@@ -298,8 +298,8 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                     if(memory_map[i -1].process_id == 0){
                         memory_map[i - 1].end_address = freed_block.end_address;
                         memory_map[i - 1].segment_size = memory_map[i - 1].segment_size + freed_block.segment_size;
-                        for(int i = release_memory_index; i <= *map_cnt; i++){
-                            memory_map[i] = memory_map[i + 1];
+                        for(int release_memory_index = i; release_memory_index <= *map_cnt; release_memory_index++){
+                            memory_map[release_memory_index] = memory_map[release_memory_index + 1];
                         }
                         *map_cnt = *map_cnt + 1;
                         free = true;
@@ -312,8 +312,8 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                     else if(memory_map[i].process_id == 0){
                         memory_map[i].start_address = memory_map[i - 1].start_address;
                         memory_map[i].segment_size = memory_map[i].end_address - memory_map[i].start_address + 1;
-                        for(int i = release_memory_index; i <= *map_cnt; i++){
-                            memory_map[i - 1] = memory_map[i];
+                        for(int release_memory_index = i; release_memory_index <= *map_cnt; release_memory_index++){
+                            memory_map[release_memory_index - 1] = memory_map[release_memory_index];
                         }
                         *map_cnt = *map_cnt - 1;
                     }
