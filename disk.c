@@ -207,10 +207,13 @@ struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int
             }
             else if((scan_direction == 1) && (closest_cylinder_same)){//none same cyl as current cyl
                 if(!larger_cylinders_present){//scan direction = 1 w/ larger Cyl
-
+                    closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                    larger_cylinders_present = true;
+                    request_index = i;
                 }
-                else if(larger_cylinders_present){//scan direction = 1 w/ no larger
-
+                else if((larger_cylinders_present) && closest_cylinder > abs(current_cylinder - readyqueue[i].cylinder)){//scan direction = 1 w/ no larger
+                    closest_cylinder = abs(current_cylinder - request_queue[i].cylinder);
+                    request_index = i;
                 }
             }
             else if((scan_direction == 0) && (closest_cylinder_same)){//none same as current cyl
