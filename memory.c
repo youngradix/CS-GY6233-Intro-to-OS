@@ -223,8 +223,7 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK   me
     struct MEMORY_BLOCK allocated = {0, 0, 0, 0};
     bool size_match = false;
     int memory_map_index = 0;
-    int next_fit_segement = 0;
-    int next_fit_index = 0; 
+    int next_fit_segement = 0; 
     for(int i = 0; i <= *map_cnt - 1; i++){
         if((request_size == memory_map[i].segment_size) && (memory_map[i].process_id == 0)){
             next_fit_segement = request_size;
