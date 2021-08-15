@@ -173,7 +173,7 @@ output          request_queue   [RID:52, AT:2, CYL:54, ADDR:54, PID:52]
 output          queue_cnt       1
 output          RCB             [RID:51, AT:1, CYL:53, ADDR:53, PID:51]*/
 
-//struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int  *queue_cnt, int current_cylinder, int scan_direction){
+struct RCB handle_request_completion_look(struct RCB request_queue[QUEUEMAX],int  *queue_cnt, int current_cylinder, int scan_direction){
     /*If the request queue is empty, the method returns NULLRCB, indicating that there is no request to service next. Otherwise, it 
     picks the next request to service from the request queue. 
 
@@ -186,36 +186,39 @@ output          RCB             [RID:51, AT:1, CYL:53, ADDR:53, PID:51]*/
     are requests with cylinders larger than the current cylinder, the method picks the request whose cylinder is closest to the current cylinder.  
     
     After picking the RCB from the request queue, as described above, the method removes the RCB from the queue and returns it.*/
-    /*if(*queue_cnt > 0){
+    if(*queue_cnt > 0){
         struct RCB next_RCB;
-        bool flag = false, first_arrivaltime = false;
+        bool first_arrivaltime = false, closest_cylinder_same = false, larger_cylinders_present = false, smaller_cylinders_present = false;
         int request_index = 0;
         int closest_cylinder = abs(current_cylinder - request_queue[0].cylinder);
         int earliest_at = request_queue[0].arrival_timestamp;
         for(int i = 0; i < *queue_cnt; i++){
-            if(closest_cylinder == request_queue[i].cylinder){
-                earliest_at = request_queue[i].arrival_timestamp;
-                            request_queue = i;
-                        }
-        
+            if(current_cylinder == request_queue[i].cylinder){
+                if(first_arrivaltime){
+                    earliest_at = request_queue[i].arrival_timestamp;
+                    first_arrivaltime = true;
+                    closest_cylinder_same = true;
+                    request_index = i;
                 }
-                else{
+                else if(earliest_at > request_queue[i].arrival_timestamp){
+                    earliest_at = request_queue[i].arrival_timestamp;
+                    request_index = i;
+                }
+            }
+            else if((scan_direction == 1) && (closest_cylinder_same)){//none same cyl as current cyl
+                if(!larger_cylinders_present){//scan direction = 1 w/ larger Cyl
+
+                }
+                else if(larger_cylinders_present){//scan direction = 1 w/ no larger
 
                 }
             }
-            else if(scan_direction == 1){//none same cyl as current cyl
-                if(){//scan direction = 1 w/ larger Cyl
-
+            else if((scan_direction == 0) && (closest_cylinder_same)){//none same as current cyl
+                if(!smaller_cylinders_present){//scan direction = 0 w/ smaller Cyl
+                    closest_cylinder = abs(request_queue[i].cylinder)
                 }
-                else if(){//scan direction = 1 w/ no larger
+                else if(!larger_cylinders_present){//scan direction = 0 w/ larger cyl
 
-                }
-            }
-            else if(){//none same as current cyl
-                if(){//scan direction = 0 w/ smaller Cyl
-
-                }
-                else if(){//scan direction = 0 w/ larger cyl
 
                 }
             }
