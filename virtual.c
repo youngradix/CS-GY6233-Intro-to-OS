@@ -33,7 +33,7 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
     else if((page_table[page_number].is_valid == 0) && (*frame_cnt > 0)){
         *frame_cnt = *frame_cnt - 1;
         page_table[page_number].frame_number = frame_pool[*frame_cnt - 1];
-        page_table[page_number].is_valid = true;
+        page_table[page_number].is_valid = 1;
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = 1;
         return page_table[page_number].frame_number;
@@ -161,7 +161,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
                 page_table[temp_index].arrival_timestamp = 0;
                 page_table[temp_index].last_access_timestamp = 0;
                 page_table[temp_index].reference_count = 0;
-                page_table[refrence_string[i]].is_valid = 1;
+                page_table[refrence_string[i]].is_valid = 0;
                 page_table[refrence_string[i]].frame_number = temp_frame;
                 page_table[refrence_string[i]].arrival_timestamp = timestamp;
                 page_table[refrence_string[i]].last_access_timestamp = timestamp;
