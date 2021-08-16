@@ -53,13 +53,10 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
                 temp_arrival_stamp = page_table[i].arrival_timestamp;
                 temp_index = i;
             }
-            else{
-                temp_index = i;
-            }
         }
         if(!flag){
             page_table[temp_index].is_valid = 0;
-            page_table[temp_index].frame_number = temp_frame;
+            page_table[temp_index].frame_number = -1;
             page_table[temp_index].arrival_timestamp = 0;
             page_table[temp_index].last_access_timestamp = 0;
             page_table[temp_index].reference_count = 0;
