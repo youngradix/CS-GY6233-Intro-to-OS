@@ -30,7 +30,7 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
         page_table[page_number].reference_count = page_table[page_number].reference_count + 1;
         return page_table[page_number].frame_number;
     }
-    else if((page_table[page_number].is_valid == 0) && (*frame_cnt => 0)){
+    else if((page_table[page_number].is_valid == 0) && (*frame_cnt > 0)){
         *frame_cnt = *frame_cnt - 1;
         page_table[page_number].frame_number = frame_pool[*frame_cnt - 1];
         page_table[page_number].is_valid = true;
