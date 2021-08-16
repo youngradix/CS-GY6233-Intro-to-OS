@@ -22,7 +22,7 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
     of the process that are currently in memory (i.e., they have valid bits as true) the page that has the smallest arrival_timestamp. It marks that page_table entry 
     as invalid, along with setting the frame_number, arrival_timestamp, last_access_timestamp and reference_count to -1. It then sets the frame_number of the page-table 
     entry of the newly-referenced page to the newly freed frame. It also sets the arrival_timestamp, the last_access_timestamp and the reference_count fields of the 
-    page-table entry appropriately. Finally, the function returns this frame number.*/ */
+    page-table entry appropriately. Finally, the function returns this frame number.*/
     if(page_table[page_number].is_valid == 1){//check if page being ref exist in mem
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = page_table[page_number].reference_count + 1;
