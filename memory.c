@@ -311,7 +311,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                     }
                     else if(memory_map[i].process_id == 0){
                         memory_map[i].start_address = memory_map[i - 1].start_address;
-                        memory_map[i].segment_size = memory_map[i].end_address - memory_map[i].start_address + 1;
+                        memory_map[i].segment_size = memory_map[i].end_address - memory_map[i].start_address;
                         for(int release_memory_index = i; release_memory_index <= *map_cnt; release_memory_index++){
                             memory_map[release_memory_index - 1] = memory_map[release_memory_index];
                         }
