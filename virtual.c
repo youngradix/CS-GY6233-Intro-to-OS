@@ -140,7 +140,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
             int temp_frame = 0;
             int temp_arrival_stamp = 0;
             page_faults = page_faults + 1;
-            for(int i = 0; i < table_cnt; i++){
+            for(int i = 0; i <= table_cnt; i++){
                 if((page_table[i].is_valid == 1) && (flag)){
                     temp_frame = page_table[i].frame_number;
                     temp_arrival_stamp = page_table[i].arrival_timestamp;
