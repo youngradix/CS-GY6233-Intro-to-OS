@@ -154,7 +154,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
                 }
             }
             if(!flag){
-                //page_table[temp_index].is_valid = 1;
+                page_table[temp_index].is_valid = 0;
                 page_table[temp_index].frame_number = -1;
                 page_table[temp_index].arrival_timestamp = 0;
                 page_table[temp_index].last_access_timestamp = 0;
