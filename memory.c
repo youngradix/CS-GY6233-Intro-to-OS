@@ -285,13 +285,13 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
     map is altered to reduce the number of memory blocks by one and the ending address (and the size) of the previous free block extended. Note that the 
     method does not have any explicit return value and instead modifies the memory map passed in  */
     bool free = false;
-    //int release_memory_index = 0;
+    int release_memory_index = 0;
     if((*map_cnt == 1) && (memory_map[0].start_address == 0) && (memory_map[0].end_address == 0) && 
     (memory_map[0].segment_size == 0) && (memory_map[0].process_id == 0)){
         return;
     }
     else{
-        for(int i = 1; i < *map_cnt - 1; i++){
+        for(int i = 1; i < *map_cnt; i++){
             if((freed_block.start_address == memory_map[i].start_address) && (freed_block.end_address == memory_map[i].end_address) && 
             (freed_block.segment_size == memory_map[i].segment_size) && (freed_block.process_id == memory_map[i].process_id)){
                 if(i > 0){
@@ -305,7 +305,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                         free = true;
                     }
                 }
-                else if(i < *map_cnt -1){
+                else if(i < *map_cnt - 1){
                     if(free){
                         i = i + 1;
                     }
