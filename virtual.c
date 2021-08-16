@@ -338,7 +338,7 @@ int count_page_faults_lru(struct PTE page_table[TABLEMAX],int table_cnt, int ref
                 page_table[temp_index].arrival_timestamp = 0;
                 page_table[temp_index].last_access_timestamp = 0;
                 page_table[temp_index].reference_count = 0;
-                page_table[refrence_string[i]].is_valid = 0;
+                page_table[refrence_string[i]].is_valid = 1;
                 page_table[refrence_string[i]].frame_number = temp_frame;
                 page_table[refrence_string[i]].arrival_timestamp = timestamp;
                 page_table[refrence_string[i]].last_access_timestamp = timestamp;
@@ -537,7 +537,7 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX],int table_cnt, int ref
                     page_table[temp_index].arrival_timestamp = 0;
                     page_table[temp_index].last_access_timestamp = 0;
                     page_table[temp_index].reference_count = 0;
-                    page_table[refrence_string[i]].is_valid = 0;
+                    page_table[refrence_string[i]].is_valid = 1;
                     page_table[refrence_string[i]].frame_number = temp_frame;
                     page_table[refrence_string[i]].arrival_timestamp = timestamp;
                     page_table[refrence_string[i]].last_access_timestamp = timestamp;
