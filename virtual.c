@@ -14,20 +14,15 @@ const
 int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int page_number, int frame_pool[POOLMAX],int *frame_cnt, int current_timestamp){
     /*The function determines the memory frame number for the logical page and returns this number. 
     First the function checks if the page being referenced is already in memory (i.e., the page-table entry has the valid bit true). If so, it returns the frame number, 
-    after modifying the last_access_timestamp and the reference_count fields of the page-table entry.
-    If the page being referenced is not in memory, the function checks if there are any free frames (i.e., the process frame pool is not empty). If so, a frame is 
-    removed from the process frame pool and the frame number is inserted into the page-table entry corresponding to the logical page number. In addition, the other 
-    fields of the page-table entry are set appropriately. The function returns the frame number associated with the page-table entry. 
-    If the page being referenced is not in memory and there are no free frames for the process, a page needs to be replaced. The function selects among all the pages 
-    of the process that are currently in memory (i.e., they have valid bits as true) the page that has the smallest arrival_timestamp. It marks that page_table entry 
-    as invalid, along with setting the frame_number, arrival_timestamp, last_access_timestamp and reference_count to -1. It then sets the frame_number of the page-table 
-    entry of the newly-referenced page to the newly freed frame. It also sets the arrival_timestamp, the last_access_timestamp and the reference_count fields of the 
-    page-table entry appropriately. Finally, the function returns this frame number.*/
+    after modifying the last_access_timestamp and the reference_count fields of the page-table entry. */
     if(page_table[page_number].is_valid == 1){//check if page being ref exist in mem
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = page_table[page_number].reference_count + 1;
         return page_table[page_number].frame_number;
     }
+    /* If the page being referenced is not in memory, the function checks if there are any free frames (i.e., the process frame pool is not empty). If so, a frame is 
+    removed from the process frame pool and the frame number is inserted into the page-table entry corresponding to the logical page number. In addition, the other 
+    fields of the page-table entry are set appropriately. The function returns the frame number associated with the page-table entry.  */ 
     else if((page_table[page_number].is_valid == 0) && (*frame_cnt > 0)){
         page_table[page_number].frame_number = frame_pool[*frame_cnt - 1];
         *frame_cnt = *frame_cnt - 1;
@@ -36,6 +31,11 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
         page_table[page_number].reference_count = 1;
         return page_table[page_number].frame_number;
     }
+    /*If the page being referenced is not in memory and there are no free frames for the process, a page needs to be replaced. The function selects among all the pages 
+    of the process that are currently in memory (i.e., they have valid bits as true) the page that has the smallest arrival_timestamp. It marks that page_table entry 
+    as invalid, along with setting the frame_number, arrival_timestamp, last_access_timestamp and reference_count to -1. It then sets the frame_number of the page-table 
+    entry of the newly-referenced page to the newly freed frame. It also sets the arrival_timestamp, the last_access_timestamp and the reference_count fields of the 
+    page-table entry appropriately. Finally, the function returns this frame number.*/
     else{
         bool flag = false;
         int temp_index = 0;
@@ -141,7 +141,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
             int temp_arrival_stamp = 0;
             page_faults = page_faults + 1;
             for(int i = 0; i <= table_cnt; i++){
-                if((page_table[i].is_valid == 1) && (flag)){
+                if((page_table[i].is_valid == 0) && (flag)){
                     temp_frame = page_table[i].frame_number;
                     temp_arrival_stamp = page_table[i].arrival_timestamp;
                     flag = true;
@@ -154,7 +154,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
                 }
             }
             if(!flag){
-                page_table[temp_index].is_valid = 0;
+                page_table[temp_index].is_valid = 1;
                 page_table[temp_index].frame_number = -1;
                 page_table[temp_index].arrival_timestamp = 0;
                 page_table[temp_index].last_access_timestamp = 0;
