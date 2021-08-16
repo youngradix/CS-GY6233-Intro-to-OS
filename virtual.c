@@ -30,7 +30,7 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
         page_table[page_number].reference_count = page_table[page_number].reference_count + 1;
         return page_table[page_number].frame_number;
     }
-    else if((page_table[page_number].is_valid == 0) && (*frame_cnt >= 0)){
+    else if((page_table[page_number].is_valid == 0) && (*frame_cnt > 0)){
         *frame_cnt = *frame_cnt - 1;
         page_table[page_number].frame_number = frame_pool[*frame_cnt - 1];
         page_table[page_number].is_valid = true;
@@ -123,7 +123,7 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX],int table_cnt, int re
     The function returns the total number of page faults encountered in the simulation*/
     int timestamp = 1;
     int page_faults = 0;
-    for(int i = 0; i< reference_cnt; i++){
+    for(int i = 0; i < reference_cnt; i++){
         if(page_table[refrence_string[i]].is_valid == 1){//check if page being ref exist in mem
             page_table[refrence_string[i]].last_access_timestamp = timestamp;
             page_table[refrence_string[i]].reference_count = page_table[refrence_string[i]].reference_count + 1;
