@@ -317,7 +317,6 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                         }
                     *map_cnt = *map_cnt - 1;
                     }
-                    *map_cnt = *map_cnt - 1;
                 }    
             break;
             }
