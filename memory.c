@@ -291,7 +291,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
         return;
     }
     else{
-        for(int i = 0; i < *map_cnt - 1; i++){
+        for(int i = 1; i < *map_cnt - 1; i++){
             if((freed_block.start_address == memory_map[i].start_address) && (freed_block.end_address == memory_map[i].end_address) && 
             (freed_block.segment_size == memory_map[i].segment_size) && (freed_block.process_id == memory_map[i].process_id)){
                 if(i > 0){
@@ -305,7 +305,7 @@ void release_memory(struct MEMORY_BLOCK freed_block, struct MEMORY_BLOCK memory_
                         free = true;
                     }
                 }
-                else if(i < *map_cnt){
+                else if(i < *map_cnt -1){
                     if(free){
                         i = i + 1;
                     }
