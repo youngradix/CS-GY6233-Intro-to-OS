@@ -55,6 +55,9 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
                 temp_arrival_stamp = page_table[i].arrival_timestamp;
                 temp_index = i;
             }
+            else{
+                temp_index = i;
+            }
         }
         if(!flag){
             page_table[temp_index].is_valid = 0;
