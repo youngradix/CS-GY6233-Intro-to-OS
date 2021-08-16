@@ -31,8 +31,8 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
         return page_table[page_number].frame_number;
     }
     else if((page_table[page_number].is_valid == 0) && (*frame_cnt > 0)){
-        *frame_cnt = *frame_cnt - 1;
         page_table[page_number].frame_number = frame_pool[*frame_cnt - 1];
+        *frame_cnt = *frame_cnt - 1;
         page_table[page_number].is_valid = 1;
         page_table[page_number].last_access_timestamp = current_timestamp;
         page_table[page_number].reference_count = 1;
@@ -68,7 +68,7 @@ int process_page_access_fifo(struct PTE page_table[TABLEMAX],int *table_cnt, int
             page_table[page_number].last_access_timestamp = current_timestamp;
             page_table[page_number].reference_count = 1;
         }
-        return page_table[page_number].frame_number;
+    return temp_frame;
     }
 }
 /*A sample execution input and output:
